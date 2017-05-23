@@ -1,6 +1,5 @@
 package Model;
 
-import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -15,10 +14,17 @@ public final class ConnHomeContract {
     private ConnHomeContract() {}
 
     public static class DeviceEntry implements BaseColumns {
-        public static final String TABLE_NAME = "devices";
+        public static final String TABLE_NAME = "device";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
-        public static final String COLUMN_NAME_TYPEID = "type";
+        public static final String COLUMN_NAME_TYPE_ID = "type_id";
+        public static final String COLUMN_NAME_PIN_NUMBER = "pin_number";
+    }
+
+    public static class ClientDeviceEntry implements BaseColumns {
+        public static final String TABLE_NAME = "clientdevicebinding";
+        public static final String COLUMN_NAME_CLIENT_ID = "client_id";
+        public static final String COLUMN_NAME_DEVICE_ID = "device_id";
         public static final String COLUMN_NAME_PINNUMBER = "pinnumber";
     }
 
@@ -26,7 +32,14 @@ public final class ConnHomeContract {
         public static final String TABLE_NAME = "type";
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
-        public static final String COLUMN_NAME_ICONURL = "iconurl";
+        public static final String COLUMN_NAME_ICON_URL = "icon_url";
+    }
+
+    public static class ClientEntry implements BaseColumns {
+        public static final String TABLE_NAME = "client";
+        public static final String COLUMN_NAME_TITLE = "title";
+        public static final String COLUMN_NAME_IP_ADDRESS = "ipaddress";
+
     }
 
     private static final String SQL_CREATE_DEVICE_ENTRIES =
@@ -34,8 +47,8 @@ public final class ConnHomeContract {
                     DeviceEntry._ID + " INTEGER PRIMARY KEY," +
                     DeviceEntry.COLUMN_NAME_TITLE + " TEXT," +
                     DeviceEntry.COLUMN_NAME_DESCRIPTION + " TEXT," +
-                    DeviceEntry.COLUMN_NAME_PINNUMBER + " INTEGER," +
-                    DeviceEntry.COLUMN_NAME_TYPEID + " INTEGER)";
+                    DeviceEntry.COLUMN_NAME_PIN_NUMBER + " INTEGER," +
+                    DeviceEntry.COLUMN_NAME_TYPE_ID + " INTEGER)";
 
 
     private static final String SQL_CREATE_TYPE_ENTRIES =
@@ -43,7 +56,7 @@ public final class ConnHomeContract {
                     TypeEntry._ID + " INTEGER PRIMARY KEY," +
                     TypeEntry.COLUMN_NAME_NAME + " TEXT," +
                     TypeEntry.COLUMN_NAME_DESCRIPTION + " TEXT," +
-                    TypeEntry.COLUMN_NAME_ICONURL + " TEXT)";
+                    TypeEntry.COLUMN_NAME_ICON_URL + " TEXT)";
 
     private static final String SQL_DELETE_DEVICE_ENTRIES =
             "DROP TABLE IF EXISTS " + DeviceEntry.TABLE_NAME;
