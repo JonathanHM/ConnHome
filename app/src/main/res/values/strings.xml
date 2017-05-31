@@ -3,4 +3,13 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_tab_screen">tab_screen</string>
     <string name="thumbnail">thumbnail</string>
+    <string name="title_activity_add_device">add_device</string>
+    <string name="lightType">Light</string>
+    <string name="gateType">Gate</string>
+    <string name="doorLockType">Door Lock</string>
+    <string-array name="types_array">
+        <item>Light</item>
+        <item>Gate</item>
+        <item>Door Lock</item>
+    </string-array>
 </resources>

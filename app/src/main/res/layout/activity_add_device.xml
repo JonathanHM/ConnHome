@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.petersomersby.connhome.Activitys.AddDeviceActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/appBarLayout">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/deviceTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appBarLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp">
+
+        <EditText
+            android:id="@+id/input_deviceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/appBarLayout"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="49dp"
+            android:layout_toEndOf="@+id/deviceTitle"
+            android:layout_weight="1"
+            android:hint="Name" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/deviceDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/deviceTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp">
+
+        <EditText
+            android:id="@+id/input_deviceDescription"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/deviceTitle"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="49dp"
+            android:layout_toEndOf="@+id/deviceDescription"
+            android:layout_weight="1"
+            android:hint="Description" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/devicePinNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/deviceDescription"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp">
+
+        <EditText
+            android:id="@+id/input_devicePinNumber"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/deviceDescription"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="49dp"
+            android:layout_toEndOf="@+id/devicePinNumber"
+            android:layout_weight="1"
+            android:hint="Pin Number" />
+    </android.support.design.widget.TextInputLayout>
+
+    <EditText
+        android:id="@+id/input_deviceType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/devicePinNumber"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="14dp"
+        android:focusable="false"
+        android:drawableRight="@android:drawable/arrow_down_float"
+        android:inputType="textPersonName"
+        android:text="@string/lightType" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/input_deviceType"
+        android:layout_below="@+id/input_deviceType"
+        android:layout_marginTop="11dp"
+        android:text="Save" />
+
+</RelativeLayout>
