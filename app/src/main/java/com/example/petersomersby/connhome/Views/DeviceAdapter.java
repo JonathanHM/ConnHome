@@ -69,12 +69,22 @@ public class DeviceAdapter extends BaseAdapter {
 
         switch (device.getType()) {
             case DeviceModel.Type.LIGHT:
-                typeSwitch.setText("On/Off");
+                typeSwitch.setTextOn("ON");
+                typeSwitch.setTextOn("OFF");
+                typeSwitch.setText("OFF/ON");
+                break;
             case DeviceModel.Type.DOORLOCK:
-                typeSwitch.setText("Lock/Unlock");
+                typeSwitch.setTextOn("Unlock");
+                typeSwitch.setTextOff("Lock");
+                typeSwitch.setText("LOCK/UNLOCK");
+                break;
             case DeviceModel.Type.GATE:
-                typeSwitch.setText("Open/Close");
+                typeSwitch.setTextOn("Open");
+                typeSwitch.setTextOff("Close");
+                typeSwitch.setText("CLOSE/OPEN");
+                break;
         }
+
 
         return rowView;
     }

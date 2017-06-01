@@ -14,11 +14,10 @@
         android:id="@+id/addDeviceTab2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
     <ListView
         android:id="@+id/deviceListViewTab2"
@@ -26,7 +25,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/addDeviceTab2" />
+        android:layout_above="@+id/addDeviceTab2"
+        android:layout_marginBottom="20dp"/>
 
     <Button
         android:id="@+id/button"

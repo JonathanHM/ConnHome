@@ -54,13 +54,6 @@ public class Tab2Devices extends Fragment {
             }
         });
 
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getActivity().getApplicationContext());
-        databaseAccess.open();
-        List<DeviceModel> devices = databaseAccess.getDevices();
-        databaseAccess.close();
-        DeviceAdapter adapter = new DeviceAdapter(mContext, devices);
-        deviceListView.setAdapter(adapter);
-
         addDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,4 +64,15 @@ public class Tab2Devices extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getActivity().getApplicationContext());
+        databaseAccess.open();
+        List<DeviceModel> devices = databaseAccess.getDevices();
+        databaseAccess.close();
+        DeviceAdapter adapter = new DeviceAdapter(mContext, devices);
+        deviceListView.setAdapter(adapter);
+    }
 }

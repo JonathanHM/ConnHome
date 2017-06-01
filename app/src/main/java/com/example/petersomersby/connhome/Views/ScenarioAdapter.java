@@ -1,63 +1,70 @@
 package com.example.petersomersby.connhome.Views;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.petersomersby.connhome.Models.DeviceModel;
 import com.example.petersomersby.connhome.Models.ScenarioModel;
 import com.example.petersomersby.connhome.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Peter Somersby on 31-05-2017.
  */
 
-public class ScenarioAdapter extends RecyclerView.Adapter<ScenarioAdapter.ViewHolder> {
+public class ScenarioAdapter extends BaseAdapter {
 
     private Context mContext;
+    private LayoutInflater mInflater;
     private List<ScenarioModel> mDataSource;
 
     public ScenarioAdapter(Context context, List<ScenarioModel> scenarios) {
-        this.mContext = context;
-        this.mDataSource = scenarios;
+        mContext = context;
+        mDataSource = scenarios;
+        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public int getItemCount() {
+    public int getCount() {
         return mDataSource.size();
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_places, parent, false);
-        return new ViewHolder(view);
+    public Object getItem(int position) {
+        return mDataSource.get(position);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final ScenarioModel scenario = mDataSource.get(position);
-        holder.placeName.setText(scenario.getName());
+    public long getItemId(int position) {
+        return mDataSource.get(position).getId();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout placeHolder;
-        public LinearLayout placeNameHolder;
-        public TextView placeName;
-        public ImageView placeImage;
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View rowView = mInflater.inflate(R.layout.list_item_scenario, parent, false);
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            placeHolder = (LinearLayout) itemView.findViewById(R.id.mainHolder);
-            placeName = (TextView) itemView.findViewById(R.id.placeName);
-            placeNameHolder = (LinearLayout) itemView.findViewById(R.id.placeNameHolder);
-            placeImage = (ImageView) itemView.findViewById(R.id.placeImage);
-        }
+        // Get title element
+        TextView titleTextView = (TextView) rowView.findViewById(R.id.scenario_list_title);
+
+        // Get description element
+        TextView descriptionTextView = (TextView) rowView.findViewById(R.id.scenario_list_description);
+
+        // Get thumbnail element
+        ImageView thumbnailImageView = (ImageView) rowView.findViewById(R.id.scenario_list_thumbnail);
+
+        ScenarioModel device = (ScenarioModel) getItem(position);
+
+        titleTextView.setText(device.getName());
+        descriptionTextView.setText(device.getDescription());
+
+        return rowView;
     }
 }

@@ -185,10 +185,22 @@ public class DatabaseAccess {
             scenario.setId(cursor.getInt(0));
             scenario.setName(cursor.getString(1));
             scenario.setDescription(cursor.getString(2));
+
+            Cursor device_ids_cursor = database.rawQuery("SELECT device_id FROM scenario_device_binding WHERE scenario_id = ?", new String[] {String.valueOf(scenario.getId())});
+            device_ids_cursor.moveToFirst();
+            List<Integer> device_ids = new ArrayList();
+            while (!device_ids_cursor.isAfterLast()) {
+                device_ids.add(device_ids_cursor.getInt(0));
+                device_ids_cursor.moveToNext();
+            }
+            device_ids_cursor.close();
+
+            scenario.setDevice_ids(device_ids);
             list.add(scenario);
             cursor.moveToNext();
         }
         cursor.close();
+
         return list;
     }
 

@@ -44,6 +44,7 @@ public class AddDeviceActivity extends AppCompatActivity implements SelectTypeDi
             @Override
             public void onClick(View view) {
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
+                databaseAccess.open();
                 DeviceModel device = new DeviceModel();
                 device.setTitle(deviceTitle.getText().toString());
                 device.setDescription(deviceDescription.getText().toString());
@@ -63,6 +64,8 @@ public class AddDeviceActivity extends AppCompatActivity implements SelectTypeDi
                 }
 
                 databaseAccess.insertDevice(device);
+                databaseAccess.close();
+                finish();
             }
         });
 
@@ -70,7 +73,7 @@ public class AddDeviceActivity extends AppCompatActivity implements SelectTypeDi
             @Override
             public void onClick(View view) {
                 DialogFragment dialog = new SelectTypeDialogFragment();
-                dialog.show(getFragmentManager(), "fire");
+                dialog.show(getFragmentManager(), "SelectTypeFragment");
             }
         });
     }

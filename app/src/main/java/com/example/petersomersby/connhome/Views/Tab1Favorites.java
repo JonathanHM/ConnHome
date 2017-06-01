@@ -1,5 +1,6 @@
 package com.example.petersomersby.connhome.Views;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -10,7 +11,14 @@ import android.widget.TextView;
 
 import com.example.petersomersby.connhome.Models.DatabaseAccess;
 import com.example.petersomersby.connhome.Models.DeviceModel;
+import com.example.petersomersby.connhome.Models.ScenarioModel;
 import com.example.petersomersby.connhome.R;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by Peter Somersby on 30-05-2017.
@@ -30,9 +38,17 @@ public class Tab1Favorites extends Fragment {
 
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getActivity().getApplicationContext());
                 databaseAccess.open();
-                databaseAccess.deleteDevice(6);
+                ScenarioModel scenarioModel = new ScenarioModel();
+                scenarioModel.setDescription("day and night");
+                scenarioModel.setName("datatatea");
+                List<Integer> list = new ArrayList<Integer>();
+                list.add(1);
+                list.add(2);
+                list.add(3);
+                scenarioModel.setDevice_ids(list);
+                databaseAccess.insertScenario(scenarioModel);
                 databaseAccess.close();
-                text.setText("Inserted device");
+                text.setText("Inserted scenario");
             }
         });
         return rootView;

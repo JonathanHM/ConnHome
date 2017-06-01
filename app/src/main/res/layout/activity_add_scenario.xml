@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.petersomersby.connhome.Activitys.AddScenarioActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/appBarLayout">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/scenarioName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appBarLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp">
+
+        <EditText
+            android:id="@+id/input_scenarioName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/appBarLayout"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="49dp"
+            android:layout_toEndOf="@+id/scenarioName"
+            android:layout_weight="1"
+            android:hint="Name" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/scenarioDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scenarioName"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp">
+
+        <EditText
+            android:id="@+id/input_scenarioDescription"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/scenarioName"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="49dp"
+            android:layout_toEndOf="@+id/scenarioDescription"
+            android:layout_weight="1"
+            android:hint="Description" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <EditText
+        android:id="@+id/input_scenarioDevices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/scenarioDescription"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="14dp"
+        android:focusable="false"
+        android:drawableRight="@android:drawable/arrow_down_float"
+        android:inputType="textPersonName"
+        android:text="Click to choose devices" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/input_scenarioDevices"
+        android:layout_below="@+id/input_scenarioDevices"
+        android:layout_marginTop="11dp"
+        android:text="Save" />
+
+</RelativeLayout>
