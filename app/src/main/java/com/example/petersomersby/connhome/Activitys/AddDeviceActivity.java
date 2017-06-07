@@ -12,19 +12,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.petersomersby.connhome.Models.ClientModel;
 import com.example.petersomersby.connhome.Models.DatabaseAccess;
 import com.example.petersomersby.connhome.Models.DeviceModel;
 import com.example.petersomersby.connhome.R;
+import com.example.petersomersby.connhome.Views.SelectClientDialogFragment;
 import com.example.petersomersby.connhome.Views.SelectTypeDialogFragment;
 
-public class AddDeviceActivity extends AppCompatActivity implements SelectTypeDialogFragment.SelectTypeListener {
+public class AddDeviceActivity extends AppCompatActivity implements SelectTypeDialogFragment.SelectTypeListener, SelectClientDialogFragment.SelectClientListener {
 
     private EditText deviceTitle;
     private EditText deviceDescription;
     private EditText devicePinNumber;
     private EditText deviceType;
+    private EditText client;
     private Context mContext;
     private Button saveButton;
+    private int client_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,9 @@ public class AddDeviceActivity extends AppCompatActivity implements SelectTypeDi
         deviceDescription = (EditText) findViewById(R.id.input_deviceDescription);
         devicePinNumber = (EditText) findViewById(R.id.input_devicePinNumber);
         deviceType = (EditText) findViewById(R.id.input_deviceType);
+        client = (EditText) findViewById(R.id.input_client);
         saveButton = (Button) findViewById(R.id.saveButton);
+        client_id = 0;
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +55,7 @@ public class AddDeviceActivity extends AppCompatActivity implements SelectTypeDi
                 device.setTitle(deviceTitle.getText().toString());
                 device.setDescription(deviceDescription.getText().toString());
                 device.setPinNumber(Integer.parseInt(devicePinNumber.getText().toString()));
-                device.setClient_id(0);
+                device.setClient_id(client_id);
 
                 switch (deviceType.getText().toString()) {
                     case "Light":
@@ -76,10 +82,24 @@ public class AddDeviceActivity extends AppCompatActivity implements SelectTypeDi
                 dialog.show(getFragmentManager(), "SelectTypeFragment");
             }
         });
+
+        client.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialog = new SelectClientDialogFragment();
+                dialog.show(getFragmentManager(), "SelectClientFragment");
+            }
+        });
     }
 
     @Override
     public void onReturnValue(String value) {
         deviceType.setText(value);
+    }
+
+    @Override
+    public void returnValue(ClientModel value) {
+        client.setText(value.getTitle());
+        client_id = value.getId();
     }
 }

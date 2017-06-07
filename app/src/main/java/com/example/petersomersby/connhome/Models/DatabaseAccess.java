@@ -19,7 +19,7 @@ public class DatabaseAccess {
     private static DatabaseAccess instance;
 
     /**
-     * Private constructor to aboid object creation from outside classes.
+     * Private constructor to avoid object creation from outside classes.
      *
      * @param context
      */
@@ -31,7 +31,7 @@ public class DatabaseAccess {
      * Return a singleton instance of DatabaseAccess.
      *
      * @param context the Context
-     * @return the instance of DabaseAccess
+     * @return the instance of DatabaseAccess
      */
     public static DatabaseAccess getInstance(Context context) {
         if (instance == null) {
@@ -63,16 +63,14 @@ public class DatabaseAccess {
      */
     public void insertDevice(DeviceModel device) {
         ContentValues deviceValues = new ContentValues();
+
         deviceValues.put("title", device.getTitle());
         deviceValues.put("description", device.getDescription());
         deviceValues.put("type_id", device.getType());
-        long device_id = database.insert("device", null, deviceValues);
+        deviceValues.put("client_id", device.getClient_id());
+        deviceValues.put("pin_number", device.getPinNumber());
 
-        ContentValues clientDeviceValues = new ContentValues();
-        clientDeviceValues.put("device_id", device_id);
-        clientDeviceValues.put("pin_number", device.getPinNumber());
-        clientDeviceValues.put("client_id", device.getClient_id());
-        database.insert("client_device_binding", null, clientDeviceValues);
+        database.insert("device", null, deviceValues);
     }
 
     /**
@@ -86,10 +84,14 @@ public class DatabaseAccess {
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
             DeviceModel device = new DeviceModel();
+
             device.setId(cursor.getInt(0));
             device.setTitle(cursor.getString(1));
             device.setDescription(cursor.getString(2));
             device.setType(cursor.getInt(3));
+            device.setClient_id(cursor.getInt(4));
+            device.setPinNumber(cursor.getInt(5));
+
             list.add(device);
             cursor.moveToNext();
         }
@@ -112,6 +114,8 @@ public class DatabaseAccess {
             device.setTitle(cursor.getString(1));
             device.setDescription(cursor.getString(2));
             device.setType(cursor.getInt(3));
+            device.setClient_id(cursor.getInt(4));
+            device.setPinNumber(cursor.getInt(5));
             cursor.moveToNext();
         }
         cursor.close();
@@ -124,22 +128,15 @@ public class DatabaseAccess {
      *
      * @param oldDevice the old device to be replaced
      * @param newDevice the new device to replace
-     * @param client_device_id the client_device_binding id to be updated
      */
-    public void updateDevice(DeviceModel oldDevice, DeviceModel newDevice, int client_device_id) {
+    public void updateDevice(DeviceModel oldDevice, DeviceModel newDevice) {
         ContentValues deviceValues = new ContentValues();
         deviceValues.put("title", newDevice.getTitle());
         deviceValues.put("description", newDevice.getDescription());
         deviceValues.put("type_id", newDevice.getType());
-        int device_id = database.update("device", deviceValues, "id = ?", new String[]{String.valueOf(oldDevice.getId())});
-
-        if (oldDevice.getPinNumber() != newDevice.getPinNumber()){
-            ContentValues clientDeviceValues = new ContentValues();
-            clientDeviceValues.put("device_id", device_id);
-            clientDeviceValues.put("pin_number", newDevice.getPinNumber());
-            clientDeviceValues.put("client_id", newDevice.getClient_id());
-            database.update("client_device_binding",  clientDeviceValues, "id = ?", new String[]{toString().valueOf(client_device_id)});
-        }
+        deviceValues.put("client_id", newDevice.getClient_id());
+        deviceValues.put("pin_number", newDevice.getPinNumber());
+        database.update("device", deviceValues, "id = ?", new String[]{String.valueOf(oldDevice.getId())});
     }
 
     /**
@@ -149,6 +146,20 @@ public class DatabaseAccess {
      */
     public void deleteDevice(int id) {
         database.delete("device", "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    /**
+     * Check if there is any devices in the database
+     *
+     * @return true if any and false if not.
+     */
+    public boolean anyDevices() {
+        Cursor cursor = database.rawQuery("SELECT * FROM device", null);
+        if(cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -315,4 +326,30 @@ public class DatabaseAccess {
         database.update("client", clientValues, "id = ?", new String[]{String.valueOf(client.getId())});
     }
 
+    /**
+     * Check if there is any clients in the database
+     *
+     * @return true if any and false if not.
+     */
+    public boolean anyClients() {
+        Cursor cursor = database.rawQuery("SELECT * FROM client", null);
+
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * This is just to clear the database when testing.
+     */
+    public void clearDatabase() {
+        database.delete("client", null, null);
+        database.delete("device", null, null);
+        database.delete("scenario", null, null);
+        database.delete("favorites", null, null);
+        database.delete("scenario_device_binding", null, null);
+    }
 }

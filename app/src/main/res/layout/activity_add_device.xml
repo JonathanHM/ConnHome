@@ -93,14 +93,28 @@
         android:focusable="false"
         android:drawableRight="@android:drawable/arrow_down_float"
         android:inputType="textPersonName"
-        android:text="@string/lightType" />
+        android:text="Select which type" />
+
+    <EditText
+        android:id="@+id/input_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/input_deviceType"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="14dp"
+        android:focusable="false"
+        android:drawableRight="@android:drawable/arrow_down_float"
+        android:inputType="textPersonName"
+        android:text="Select client" />
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/input_deviceType"
-        android:layout_below="@+id/input_deviceType"
+        android:layout_alignStart="@+id/input_client"
+        android:layout_below="@+id/input_client"
         android:layout_marginTop="11dp"
         android:text="Save" />
 

@@ -1,6 +1,8 @@
 package com.example.petersomersby.connhome.Views;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.petersomersby.connhome.Models.ClientModel;
+import com.example.petersomersby.connhome.Models.DatabaseAccess;
 import com.example.petersomersby.connhome.Models.DeviceModel;
+import com.example.petersomersby.connhome.Network.Networking;
 import com.example.petersomersby.connhome.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,12 +61,12 @@ public class DeviceAdapter extends BaseAdapter {
         TextView descriptionTextView = (TextView) rowView.findViewById(R.id.device_list_description);
 
         // Get switch element
-        Switch typeSwitch = (Switch) rowView.findViewById(R.id.device_list_onOffSwitch);
+        final Switch typeSwitch = (Switch) rowView.findViewById(R.id.device_list_onOffSwitch);
 
         // Get thumbnail element
         ImageView thumbnailImageView = (ImageView) rowView.findViewById(R.id.device_list_thumbnail);
 
-        DeviceModel device = (DeviceModel) getItem(position);
+        final DeviceModel device = (DeviceModel) getItem(position);
 
         titleTextView.setText(device.getTitle());
         descriptionTextView.setText(device.getDescription());
@@ -85,7 +89,35 @@ public class DeviceAdapter extends BaseAdapter {
                 break;
         }
 
+        typeSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SendOverNetwork sendOverNetwork = new SendOverNetwork();
+                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
+                databaseAccess.open();
+                ClientModel clientModel = databaseAccess.getClient(device.getClient_id());
+                sendOverNetwork.doInBackground(clientModel.getIp_address());
+            }
+        });
+
 
         return rowView;
+    }
+
+    public class SendOverNetwork extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Networking networking = new Networking(9000, params[0]);
+                networking.send("Hva så din gamle luder");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(String page) {
+
+        }
     }
 }

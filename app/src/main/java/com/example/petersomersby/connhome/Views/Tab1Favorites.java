@@ -1,5 +1,6 @@
 package com.example.petersomersby.connhome.Views;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -32,23 +33,18 @@ public class Tab1Favorites extends Fragment {
         View rootView = inflater.inflate(R.layout.tab1favorites, container, false);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabtab1);
         final TextView text = (TextView) rootView.findViewById(R.id.section_labeltab1);
+        Context context = getActivity().getApplicationContext();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getActivity().getApplicationContext());
                 databaseAccess.open();
-                ScenarioModel scenarioModel = new ScenarioModel();
-                scenarioModel.setDescription("day and night");
-                scenarioModel.setName("datatatea");
-                List<Integer> list = new ArrayList<Integer>();
-                list.add(1);
-                list.add(2);
-                list.add(3);
-                scenarioModel.setDevice_ids(list);
-                databaseAccess.insertScenario(scenarioModel);
+
+                databaseAccess.clearDatabase();
+
                 databaseAccess.close();
-                text.setText("Inserted scenario");
+                text.setText("Database Cleared");
             }
         });
         return rootView;

@@ -3,6 +3,7 @@ package com.example.petersomersby.connhome.Views;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.petersomersby.connhome.Activitys.AddDeviceActivity;
+import com.example.petersomersby.connhome.Models.ClientModel;
 import com.example.petersomersby.connhome.Models.DatabaseAccess;
 import com.example.petersomersby.connhome.Models.DeviceModel;
 import com.example.petersomersby.connhome.R;
@@ -30,22 +32,30 @@ public class Tab2Devices extends Fragment {
     private FloatingActionButton addDeviceButton;
     private Context mContext;
     private Button button;
+    private DatabaseAccess databaseAccess;
+    private Boolean anyClients;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.tab2devices, container, false);
+        final View rootView = inflater.inflate(R.layout.tab2devices, container, false);
 
         deviceListView = (ListView) rootView.findViewById(R.id.deviceListViewTab2);
         addDeviceButton = (FloatingActionButton) rootView.findViewById(R.id.addDeviceTab2);
         mContext = getActivity().getApplicationContext();
         button = (Button) rootView.findViewById(R.id.button);
+        databaseAccess = DatabaseAccess.getInstance(getActivity().getApplicationContext());
+
+        databaseAccess.open();
+
+        anyClients = databaseAccess.anyClients();
+
+        databaseAccess.close();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getActivity().getApplicationContext());
                 databaseAccess.open();
                 List<DeviceModel> devices = databaseAccess.getDevices();
                 databaseAccess.close();
@@ -57,8 +67,13 @@ public class Tab2Devices extends Fragment {
         addDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addDeviceScreen = new Intent(mContext, AddDeviceActivity.class);
-                startActivity(addDeviceScreen);
+                if (anyClients) {
+                    Intent addDeviceScreen = new Intent(mContext, AddDeviceActivity.class);
+                    startActivity(addDeviceScreen);
+                } else {
+                    Snackbar.make(view, "You need to add a client, before you can add devices", Snackbar.LENGTH_LONG)
+                    .show();
+                }
             }
         });
         return rootView;
@@ -68,7 +83,6 @@ public class Tab2Devices extends Fragment {
     public void onResume() {
         super.onResume();
 
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getActivity().getApplicationContext());
         databaseAccess.open();
         List<DeviceModel> devices = databaseAccess.getDevices();
         databaseAccess.close();

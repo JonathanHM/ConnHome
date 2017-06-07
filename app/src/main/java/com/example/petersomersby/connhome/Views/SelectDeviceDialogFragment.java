@@ -35,12 +35,8 @@ public class SelectDeviceDialogFragment extends DialogFragment {
         databaseAccess.close();
         final String[] deviceTitles = new String[devices.size()];
 
-        int i = 0;
-
-        for (DeviceModel device :
-                devices) {
-            deviceTitles[i] = device.getTitle();
-            i++;
+        for (int i = 0; i < devices.size(); i++) {
+            deviceTitles[i] = devices.get(i).getTitle();
         }
 
         final List<DeviceModel> mSelectedItems = new ArrayList();
@@ -85,7 +81,7 @@ public class SelectDeviceDialogFragment extends DialogFragment {
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString()
-                    + " must implement EditNameDialogListener");
+                    + " must implement SelectDeviceListener");
         }
     }
 }

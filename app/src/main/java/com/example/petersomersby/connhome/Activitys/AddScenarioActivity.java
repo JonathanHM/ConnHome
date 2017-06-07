@@ -45,10 +45,12 @@ public class AddScenarioActivity extends AppCompatActivity implements SelectDevi
             public void onClick(View view) {
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
                 databaseAccess.open();
+
                 ScenarioModel scenario = new ScenarioModel();
                 scenario.setName(String.valueOf(scenarioName.getText()));
                 scenario.setDescription(String.valueOf(scenarioDescription.getText()));
                 scenario.setDevice_ids(device_ids);
+
                 databaseAccess.insertScenario(scenario);
                 databaseAccess.close();
                 finish();

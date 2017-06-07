@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,20 +9,30 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.petersomersby.connhome.Activitys.TabActivity">
 
-    <TextView
-        android:id="@+id/section_label"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addClientTab4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tab4 clients text"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <ListView
+        android:id="@+id/clientListTab4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/addClientTab4"
+        android:layout_marginBottom="20dp"/>
 
     <Button
-        android:id="@+id/sendButton"
+        android:id="@+id/refreshClients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/section_label"
-        android:layout_marginStart="57dp"
-        android:layout_marginTop="35dp"
         android:text="Button" />
 
 </RelativeLayout>

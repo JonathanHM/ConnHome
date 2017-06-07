@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.petersomersby.connhome">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +24,8 @@
             android:name=".Activitys.AddDeviceActivity"
             android:label="@string/title_activity_add_device"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activitys.AddScenarioActivity"></activity>
+        <activity android:name=".Activitys.AddScenarioActivity" />
+        <activity android:name=".Activitys.AddClientActivity"></activity>
     </application>
 
 </manifest>
