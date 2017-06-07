@@ -237,8 +237,82 @@ public class DatabaseAccess {
      */
     public void deleteScenario(int id) {
         database.delete("scenario", "id = ?", new String[]{String.valueOf(id)});
-        database.close();
     }
 
+
+    /**
+     * Insert a client
+     *
+     * @param client the ClientModel to insert
+     */
+    public void insertClient(ClientModel client) {
+        ContentValues clientValues = new ContentValues();
+        clientValues.put("title", client.getTitle());
+        clientValues.put("ip_address", client.getIp_address());
+        database.insert("client", null, clientValues);
+    }
+
+    /**
+     * Get all clients from database
+     *
+     * @return a list of ClientModel's
+     */
+    public List<ClientModel> getClients() {
+        List<ClientModel> clients = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM client", null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            ClientModel client = new ClientModel();
+            client.setId(cursor.getInt(0));
+            client.setTitle(cursor.getString(1));
+            client.setIp_address(cursor.getString(2));
+
+            clients.add(client);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return clients;
+    }
+
+    /**
+     * Get a single client from the database
+     *
+     * @param id the client's id
+     * @return a ClientModel
+     */
+    public ClientModel getClient(int id) {
+        Cursor cursor = database.rawQuery("SELECT * FROM client WHERE id = ?", new String[]{String.valueOf(id)});
+        cursor.moveToFirst();
+        ClientModel client = new ClientModel();
+        client.setId(id);
+        client.setTitle(cursor.getString(1));
+        client.setIp_address(cursor.getString(2));
+        cursor.close();
+        return client;
+    }
+
+    /**
+     * Delete a client from the database
+     *
+     * @param id the id of the client
+     */
+    public void deleteClient(int id) {
+        database.delete("client", "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    /**
+     * Update a client from the database
+     *
+     * @param client the ClientModel to update
+     */
+    public void updateClient(ClientModel client) {
+        ContentValues clientValues = new ContentValues();
+        clientValues.put("title", client.getTitle());
+        clientValues.put("ip_address", client.getIp_address());
+        database.update("client", clientValues, "id = ?", new String[]{String.valueOf(client.getId())});
+    }
 
 }
