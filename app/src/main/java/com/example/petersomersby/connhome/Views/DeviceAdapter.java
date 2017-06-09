@@ -95,8 +95,9 @@ public class DeviceAdapter extends BaseAdapter {
                 SendOverNetwork sendOverNetwork = new SendOverNetwork();
                 DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
                 databaseAccess.open();
+                String toSend = "S," + device.getPinNumber();
                 ClientModel clientModel = databaseAccess.getClient(device.getClient_id());
-                sendOverNetwork.doInBackground(clientModel.getIp_address());
+                sendOverNetwork.execute(clientModel.getIp_address(), toSend);
             }
         });
 
@@ -108,8 +109,8 @@ public class DeviceAdapter extends BaseAdapter {
         @Override
         protected String doInBackground(String... params) {
             try {
-                Networking networking = new Networking(9000, params[0]);
-                networking.send("Hva så din gamle luder");
+                Networking networking = new Networking(4545, params[0]);
+                networking.send(params[1]);
             } catch (Exception e) {
                 e.printStackTrace();
             }

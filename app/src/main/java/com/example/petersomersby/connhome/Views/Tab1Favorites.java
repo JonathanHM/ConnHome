@@ -1,6 +1,7 @@
 package com.example.petersomersby.connhome.Views;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.example.petersomersby.connhome.Models.DatabaseAccess;
 import com.example.petersomersby.connhome.Models.DeviceModel;
 import com.example.petersomersby.connhome.Models.ScenarioModel;
+import com.example.petersomersby.connhome.Network.Networking;
 import com.example.petersomersby.connhome.R;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ import java.util.ListIterator;
 public class Tab1Favorites extends Fragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1favorites, container, false);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabtab1);
@@ -37,16 +39,34 @@ public class Tab1Favorites extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getActivity().getApplicationContext());
+                //databaseAccess.open();
 
-                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getActivity().getApplicationContext());
-                databaseAccess.open();
+                //databaseAccess.clearDatabase();
 
-                databaseAccess.clearDatabase();
-
-                databaseAccess.close();
-                text.setText("Database Cleared");
+                //databaseAccess.close();
+                //text.setText("Database Cleared");
+                SendOverNetwork sendOverNetwork = new SendOverNetwork();
+                sendOverNetwork.execute("S,5");
             }
         });
         return rootView;
+    }
+
+    public class SendOverNetwork extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Networking networking = new Networking(4545, "192.168.1.100");
+                networking.send(params[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(String page) {
+
+        }
     }
 }

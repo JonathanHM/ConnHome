@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Exchanger;
 
 /**
  * Created by Peter Somersby on 30-05-2017.
@@ -69,7 +70,6 @@ public class DatabaseAccess {
         deviceValues.put("type_id", device.getType());
         deviceValues.put("client_id", device.getClient_id());
         deviceValues.put("pin_number", device.getPinNumber());
-
         database.insert("device", null, deviceValues);
     }
 
