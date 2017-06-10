@@ -26,7 +26,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activitys.AddScenarioActivity" />
         <activity android:name=".Activitys.AddClientActivity" />
-        <activity android:name=".Activitys.EditClientActivity"></activity>
+        <activity android:name=".Activitys.EditClientActivity" />
+        <activity android:name=".Activitys.AddFavoritesActivity"></activity>
     </application>
 
 </manifest>

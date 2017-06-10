@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,6 +141,18 @@ public class DatabaseAccess {
         database.update("device", deviceValues, "id = ?", new String[]{String.valueOf(oldDevice.getId())});
     }
 
+    public void addDeviceToFavorites(int id) {
+        ContentValues values = new ContentValues();
+        values.put("favorite", 1);
+        database.update("device", values, "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    public void deleteDeviceFromFavorites(int id) {
+        ContentValues values = new ContentValues();
+        values.put("favorite", 0);
+        database.update("device", values, "id = ?", new String[]{String.valueOf(id)});
+    }
+
     /**
      * Delete device
      *
@@ -240,6 +253,18 @@ public class DatabaseAccess {
             scenarioDeviceValues.put("scenario_id", scenario_id);
             database.insert("scenario_device_binding", null, scenarioDeviceValues);
         }
+    }
+
+    public void addScenarioToFavorites(int id) {
+        ContentValues values = new ContentValues();
+        values.put("favorite", 1);
+        database.update("scenario", values, "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    public void deleteScenarioFromFavorites(int id) {
+        ContentValues values = new ContentValues();
+        values.put("favorite", 0);
+        database.update("scenario", values, "id = ?", new String[]{String.valueOf(id)});
     }
 
     /**
@@ -343,6 +368,12 @@ public class DatabaseAccess {
         return true;
     }
 
+    /**
+     * Get devices for specific client
+     *
+     * @param clientId the clients id
+     * @return a List<DeviceModel> with all the devices
+     */
     public List<DeviceModel> getDevicesForClient(int clientId) {
         List<DeviceModel> devices = new ArrayList();
         Cursor cursor = database.rawQuery("SELECT * FROM device WHERE client_id = ?", new String[]{String.valueOf(clientId)});
@@ -365,6 +396,57 @@ public class DatabaseAccess {
         cursor.close();
 
         return devices;
+    }
+
+    /**
+     * Get all favorites
+     *
+     * @return a pair of devices and scenarios.
+     */
+    public Pair<List<DeviceModel>, List<ScenarioModel>> getFavorites() {
+        List<DeviceModel> devices = new ArrayList();
+        List<ScenarioModel> scenarios = new ArrayList();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM device WHERE favorite = 1", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            DeviceModel device = new DeviceModel();
+            device.setId(cursor.getInt(0));
+            device.setTitle(cursor.getString(1));
+            device.setDescription(cursor.getString(2));
+            device.setType(cursor.getInt(3));
+            device.setClient_id(cursor.getInt(4));
+            device.setPinNumber(cursor.getInt(5));
+            devices.add(device);
+
+            cursor.moveToNext();
+        }
+
+        cursor = database.rawQuery("SELECT * FROM scenario WHERE favorite = 1", null);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            ScenarioModel scenario = new ScenarioModel();
+            scenario.setId(cursor.getInt(0));
+            scenario.setName(cursor.getString(1));
+            scenario.setDescription(cursor.getString(2));
+
+            Cursor device_ids_cursor = database.rawQuery("SELECT device_id FROM scenario_device_binding WHERE scenario_id = ?", new String[] {String.valueOf(scenario.getId())});
+            device_ids_cursor.moveToFirst();
+            List<Integer> device_ids = new ArrayList();
+            while (!device_ids_cursor.isAfterLast()) {
+                device_ids.add(device_ids_cursor.getInt(0));
+                device_ids_cursor.moveToNext();
+            }
+            device_ids_cursor.close();
+
+            scenario.setDevice_ids(device_ids);
+            scenarios.add(scenario);
+
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return Pair.create(devices, scenarios);
     }
 
     /**

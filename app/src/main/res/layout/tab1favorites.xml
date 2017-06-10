@@ -10,10 +10,29 @@
     tools:context="com.example.petersomersby.connhome.Activitys.TabActivity">
 
     <TextView
-        android:id="@+id/section_labeltab1"
+        android:id="@+id/scenario_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tab1 favorites text"/>
+        android:text="Scenarios"/>
+
+    <ListView
+        android:id="@+id/scenario_list"
+        android:layout_below="@+id/scenario_label"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"></ListView>
+
+    <TextView
+        android:id="@+id/device_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scenario_list"
+        android:text="Devices" />
+
+    <ListView
+        android:id="@+id/device_list"
+        android:layout_below="@+id/device_label"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabtab1"

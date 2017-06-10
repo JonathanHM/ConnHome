@@ -1,6 +1,7 @@
 package com.example.petersomersby.connhome.Views;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.example.petersomersby.connhome.Models.DeviceModel;
 import com.example.petersomersby.connhome.Network.Networking;
 import com.example.petersomersby.connhome.Network.SendOverNetwork;
 import com.example.petersomersby.connhome.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -74,18 +76,13 @@ public class DeviceAdapter extends BaseAdapter {
 
         switch (device.getType()) {
             case DeviceModel.Type.LIGHT:
-                typeSwitch.setTextOn("ON");
-                typeSwitch.setTextOn("OFF");
                 typeSwitch.setText("OFF/ON");
+                Picasso.with(mContext).load(R.drawable.ic_lightbulb).placeholder(R.mipmap.ic_launcher).into(thumbnailImageView);
                 break;
             case DeviceModel.Type.DOORLOCK:
-                typeSwitch.setTextOn("Unlock");
-                typeSwitch.setTextOff("Lock");
                 typeSwitch.setText("LOCK/UNLOCK");
                 break;
             case DeviceModel.Type.GATE:
-                typeSwitch.setTextOn("Open");
-                typeSwitch.setTextOff("Close");
                 typeSwitch.setText("CLOSE/OPEN");
                 break;
         }
