@@ -42,6 +42,7 @@ public class Tab4Clients extends Fragment {
         clientListView = (ListView) rootView.findViewById(R.id.clientListTab4);
         fab = (FloatingActionButton) rootView.findViewById(R.id.addClientTab4);
 
+
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
         databaseAccess.open();
 
@@ -49,7 +50,7 @@ public class Tab4Clients extends Fragment {
 
         databaseAccess.close();
 
-        ClientAdapter adapter = new ClientAdapter(mContext, clients);
+        ClientAdapter adapter = new ClientAdapter(getContext(), clients);
         clientListView.setAdapter(adapter);
 
 
@@ -62,22 +63,5 @@ public class Tab4Clients extends Fragment {
         });
 
         return rootView;
-    }
-
-    public class SendOverNetwork extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                Networking networking = new Networking(9000, "192.168.1.172");
-                networking.send("Hva så din gamle luder");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        protected void onPostExecute(String page) {
-
-        }
     }
 }

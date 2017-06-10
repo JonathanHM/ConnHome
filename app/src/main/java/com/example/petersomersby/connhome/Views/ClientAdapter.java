@@ -1,13 +1,16 @@
 package com.example.petersomersby.connhome.Views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.petersomersby.connhome.Activitys.EditClientActivity;
 import com.example.petersomersby.connhome.Models.ClientModel;
 import com.example.petersomersby.connhome.Models.DeviceModel;
 import com.example.petersomersby.connhome.Models.ScenarioModel;
@@ -56,13 +59,25 @@ public class ClientAdapter extends BaseAdapter {
         // Get description element
         TextView ipAddressTextView = (TextView) rowView.findViewById(R.id.client_list_ipaddress);
 
+        // Get edit button element
+        Button editButton = (Button) rowView.findViewById(R.id.client_list_editButton);
+
         // Get thumbnail element
         ImageView thumbnailImageView = (ImageView) rowView.findViewById(R.id.client_list_thumbnail);
 
-        ClientModel client = (ClientModel) getItem(position);
+        final ClientModel client = (ClientModel) getItem(position);
 
         titleTextView.setText(client.getTitle());
         ipAddressTextView.setText(client.getIp_address());
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent editDeviceIntent = new Intent(mContext, EditClientActivity.class);
+                editDeviceIntent.putExtra("clientId", client.getId());
+                mContext.startActivity(editDeviceIntent);
+            }
+        });
 
         return rowView;
     }

@@ -1,5 +1,6 @@
 package com.example.petersomersby.connhome.Models;
 
+import android.bluetooth.BluetoothClass;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -340,6 +341,30 @@ public class DatabaseAccess {
         }
 
         return true;
+    }
+
+    public List<DeviceModel> getDevicesForClient(int clientId) {
+        List<DeviceModel> devices = new ArrayList();
+        Cursor cursor = database.rawQuery("SELECT * FROM device WHERE client_id = ?", new String[]{String.valueOf(clientId)});
+
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast()) {
+            DeviceModel device = new DeviceModel();
+            device.setId(cursor.getInt(0));
+            device.setTitle(cursor.getString(1));
+            device.setDescription(cursor.getString(2));
+            device.setType(cursor.getInt(3));
+            device.setClient_id(clientId);
+            device.setPinNumber(cursor.getInt(5));
+            devices.add(device);
+
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+        return devices;
     }
 
     /**

@@ -15,6 +15,7 @@ import com.example.petersomersby.connhome.Models.ClientModel;
 import com.example.petersomersby.connhome.Models.DatabaseAccess;
 import com.example.petersomersby.connhome.Models.DeviceModel;
 import com.example.petersomersby.connhome.Network.Networking;
+import com.example.petersomersby.connhome.Network.SendOverNetwork;
 import com.example.petersomersby.connhome.R;
 
 import java.util.List;
@@ -103,22 +104,5 @@ public class DeviceAdapter extends BaseAdapter {
 
 
         return rowView;
-    }
-
-    public class SendOverNetwork extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                Networking networking = new Networking(4545, params[0]);
-                networking.send(params[1]);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        protected void onPostExecute(String page) {
-
-        }
     }
 }
