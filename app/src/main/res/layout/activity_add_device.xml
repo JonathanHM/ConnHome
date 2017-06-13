@@ -38,6 +38,8 @@
             android:layout_marginTop="49dp"
             android:layout_toEndOf="@+id/deviceTitle"
             android:layout_weight="1"
+            android:maxLines="1"
+            android:inputType="textPersonName"
             android:hint="Name" />
     </android.support.design.widget.TextInputLayout>
 
@@ -58,6 +60,7 @@
             android:layout_marginTop="49dp"
             android:layout_toEndOf="@+id/deviceDescription"
             android:layout_weight="1"
+            android:inputType="textLongMessage"
             android:hint="Description" />
     </android.support.design.widget.TextInputLayout>
 
@@ -78,6 +81,8 @@
             android:layout_marginTop="49dp"
             android:layout_toEndOf="@+id/devicePinNumber"
             android:layout_weight="1"
+            android:maxLines="1"
+            android:inputType="number"
             android:hint="Pin Number" />
     </android.support.design.widget.TextInputLayout>
 

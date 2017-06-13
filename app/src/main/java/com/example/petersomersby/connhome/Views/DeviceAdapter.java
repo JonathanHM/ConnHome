@@ -1,9 +1,10 @@
 package com.example.petersomersby.connhome.Views;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class DeviceAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private List<DeviceModel> mDataSource;
+
 
     public DeviceAdapter(Context context, List<DeviceModel> devices) {
         mContext = context;
@@ -69,6 +71,9 @@ public class DeviceAdapter extends BaseAdapter {
         // Get thumbnail element
         ImageView thumbnailImageView = (ImageView) rowView.findViewById(R.id.device_list_thumbnail);
 
+        // Get deleteBtn
+        ImageView deleteBtn = (ImageView) rowView.findViewById(R.id.deleteDeviceBtn);
+
         final DeviceModel device = (DeviceModel) getItem(position);
 
         titleTextView.setText(device.getTitle());
@@ -96,10 +101,43 @@ public class DeviceAdapter extends BaseAdapter {
                 String toSend = "S," + device.getPinNumber();
                 ClientModel clientModel = databaseAccess.getClient(device.getClient_id());
                 sendOverNetwork.execute(clientModel.getIp_address(), toSend);
+                ReceiveOverNetwork receiveOverNetwork = new ReceiveOverNetwork();
+                receiveOverNetwork.execute();
             }
         });
 
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
+                databaseAccess.open();
+                databaseAccess.deleteDevice(device.getId());
+                databaseAccess.close();
+                Snackbar.make(view, "Device " + device.getTitle() + " Deleted", Snackbar.LENGTH_LONG).show();
+                mDataSource.remove(device);
+                notifyDataSetChanged();
+            }
+        });
 
         return rowView;
     }
+
+    public class ReceiveOverNetwork extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String statusString = "";
+            try {
+                Networking networking = new Networking(4545, "");
+                statusString = networking.receive();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return statusString;
+        }
+
+        protected void onPostExecute(String statusString) {
+
+        }
+    }
+
 }
