@@ -1,6 +1,8 @@
 package com.example.petersomersby.connhome.Views;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
@@ -32,7 +34,7 @@ public class DeviceAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private List<DeviceModel> mDataSource;
-
+    private View mView;
 
     public DeviceAdapter(Context context, List<DeviceModel> devices) {
         mContext = context;
@@ -68,9 +70,6 @@ public class DeviceAdapter extends BaseAdapter {
         // Get switch element
         final Switch typeSwitch = (Switch) rowView.findViewById(R.id.device_list_onOffSwitch);
 
-        // Get thumbnail element
-        ImageView thumbnailImageView = (ImageView) rowView.findViewById(R.id.device_list_thumbnail);
-
         // Get deleteBtn
         ImageView deleteBtn = (ImageView) rowView.findViewById(R.id.deleteDeviceBtn);
 
@@ -82,7 +81,6 @@ public class DeviceAdapter extends BaseAdapter {
         switch (device.getType()) {
             case DeviceModel.Type.LIGHT:
                 typeSwitch.setText("OFF/ON");
-                Picasso.with(mContext).load(R.drawable.ic_lightbulb).placeholder(R.mipmap.ic_launcher).into(thumbnailImageView);
                 break;
             case DeviceModel.Type.DOORLOCK:
                 typeSwitch.setText("LOCK/UNLOCK");
@@ -101,6 +99,7 @@ public class DeviceAdapter extends BaseAdapter {
                 String toSend = "S," + device.getPinNumber();
                 ClientModel clientModel = databaseAccess.getClient(device.getClient_id());
                 sendOverNetwork.execute(clientModel.getIp_address(), toSend);
+                mView = view;
                 ReceiveOverNetwork receiveOverNetwork = new ReceiveOverNetwork();
                 receiveOverNetwork.execute();
             }
@@ -109,13 +108,31 @@ public class DeviceAdapter extends BaseAdapter {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
-                databaseAccess.open();
-                databaseAccess.deleteDevice(device.getId());
-                databaseAccess.close();
-                Snackbar.make(view, "Device " + device.getTitle() + " Deleted", Snackbar.LENGTH_LONG).show();
-                mDataSource.remove(device);
-                notifyDataSetChanged();
+                final View snackBarView = view;
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+                builder.setTitle("Are you sure you wanna delete Device?");
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
+                        databaseAccess.open();
+                        databaseAccess.deleteDevice(device.getId());
+                        databaseAccess.close();
+                        Snackbar.make(snackBarView, "Device " + device.getTitle() + " Deleted", Snackbar.LENGTH_LONG).show();
+                        mDataSource.remove(device);
+                        notifyDataSetChanged();
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+
+                dialog.show();
             }
         });
 
@@ -136,7 +153,7 @@ public class DeviceAdapter extends BaseAdapter {
         }
 
         protected void onPostExecute(String statusString) {
-
+            Snackbar.make(mView, statusString.equals("S") ? "Success" : "Failure", Snackbar.LENGTH_LONG).show();
         }
     }
 

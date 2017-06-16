@@ -159,6 +159,7 @@ public class DatabaseAccess {
      * @param id the id of the device to be deleted
      */
     public void deleteDevice(int id) {
+        database.delete("scenario_device_binding", "device_id = ?", new String[]{String.valueOf(id)});
         database.delete("device", "id = ?", new String[]{String.valueOf(id)});
     }
 

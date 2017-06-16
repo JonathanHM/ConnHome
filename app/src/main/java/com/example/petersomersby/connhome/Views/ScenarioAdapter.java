@@ -1,8 +1,11 @@
 package com.example.petersomersby.connhome.Views;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothClass;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.provider.ContactsContract;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,8 +71,8 @@ public class ScenarioAdapter extends BaseAdapter {
         // Get button element
         Button runButton = (Button) rowView.findViewById(R.id.scenario_list_buttonRun);
 
-        // Get thumbnail element
-        ImageView thumbnailImageView = (ImageView) rowView.findViewById(R.id.scenario_list_thumbnail);
+        // Get Delete Button Element
+        ImageView deleteButton = (ImageView) rowView.findViewById(R.id.deleteScenarioBtn);
 
         final ScenarioModel scenario = (ScenarioModel) getItem(position);
 
@@ -122,6 +125,37 @@ public class ScenarioAdapter extends BaseAdapter {
                     SendOverNetwork sendOverNetwork = new SendOverNetwork();
                     sendOverNetwork.execute(ipAddress, toSend);
                 }
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final View snackBarView = view;
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+                builder.setTitle("Are you sure you wanna delete Scenario?");
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
+                        databaseAccess.open();
+                        databaseAccess.deleteScenario(scenario.getId());
+                        databaseAccess.close();
+                        Snackbar.make(snackBarView, "Scenario " + scenario.getName() + " Deleted", Snackbar.LENGTH_LONG).show();
+                        mDataSource.remove(scenario);
+                        notifyDataSetChanged();
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+
+                dialog.show();
             }
         });
 

@@ -44,7 +44,6 @@ public class Tab2Devices extends Fragment {
         deviceListView = (ListView) rootView.findViewById(R.id.deviceListViewTab2);
         addDeviceButton = (FloatingActionButton) rootView.findViewById(R.id.addDeviceTab2);
         mContext = getActivity().getApplicationContext();
-        button = (Button) rootView.findViewById(R.id.button);
         databaseAccess = DatabaseAccess.getInstance(getActivity().getApplicationContext());
 
         databaseAccess.open();
@@ -52,17 +51,6 @@ public class Tab2Devices extends Fragment {
         anyClients = databaseAccess.anyClients();
 
         databaseAccess.close();
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                databaseAccess.open();
-                List<DeviceModel> devices = databaseAccess.getDevices();
-                databaseAccess.close();
-                DeviceAdapter adapter = new DeviceAdapter(mContext, devices);
-                deviceListView.setAdapter(adapter);
-            }
-        });
 
         addDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +74,7 @@ public class Tab2Devices extends Fragment {
         databaseAccess.open();
         List<DeviceModel> devices = databaseAccess.getDevices();
         databaseAccess.close();
-        DeviceAdapter adapter = new DeviceAdapter(mContext, devices);
+        DeviceAdapter adapter = new DeviceAdapter(getContext(), devices);
         deviceListView.setAdapter(adapter);
     }
 }

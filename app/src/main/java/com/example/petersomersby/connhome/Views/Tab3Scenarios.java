@@ -75,7 +75,7 @@ public class Tab3Scenarios extends Fragment {
         List<ScenarioModel> scenarios = databaseAccess.getScenarios();
         databaseAccess.close();
 
-        ScenarioAdapter adapter = new ScenarioAdapter(mContext, scenarios);
+        ScenarioAdapter adapter = new ScenarioAdapter(getContext(), scenarios);
         scenarioListView.setAdapter(adapter);
     }
 }

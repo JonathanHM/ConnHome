@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
-        android:id="@+id/scenario_list_thumbnail"
+        android:id="@+id/deleteScenarioBtn"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_alignParentStart="true"
@@ -14,8 +14,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="6dp"
         android:scaleType="centerInside"
-        tools:src="@mipmap/ic_launcher"
-        android:contentDescription="@string/thumbnail"/>
+        android:background="@android:drawable/ic_delete" />
 
     <RelativeLayout
         android:id="@+id/scenario_list_text_layout"
@@ -23,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/scenario_list_buttonRun"
-        android:layout_toEndOf="@+id/scenario_list_thumbnail">
+        android:layout_toEndOf="@+id/deleteScenarioBtn">
 
         <TextView
             android:id="@+id/scenario_list_title"
