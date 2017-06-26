@@ -20,14 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activitys.AddDeviceActivity"
-            android:label="@string/title_activity_add_device"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activitys.AddScenarioActivity" />
         <activity android:name=".Activitys.AddClientActivity" />
         <activity android:name=".Activitys.EditClientActivity" />
-        <activity android:name=".Activitys.AddFavoritesActivity"></activity>
+        <activity android:name=".Activitys.AddFavoritesActivity" />
+        <activity android:name=".Activitys.AddDeviceActivity"></activity>
     </application>
 
 </manifest>

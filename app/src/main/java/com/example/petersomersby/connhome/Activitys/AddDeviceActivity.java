@@ -34,8 +34,6 @@ public class AddDeviceActivity extends AppCompatActivity implements SelectTypeDi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_device);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         mContext = getApplicationContext();
         deviceTitle = (EditText) findViewById(R.id.input_deviceTitle);

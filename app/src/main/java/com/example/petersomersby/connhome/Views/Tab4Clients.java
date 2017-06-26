@@ -42,7 +42,6 @@ public class Tab4Clients extends Fragment {
         clientListView = (ListView) rootView.findViewById(R.id.clientListTab4);
         fab = (FloatingActionButton) rootView.findViewById(R.id.addClientTab4);
 
-
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
         databaseAccess.open();
 

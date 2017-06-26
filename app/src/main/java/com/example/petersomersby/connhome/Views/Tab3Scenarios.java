@@ -2,21 +2,15 @@ package com.example.petersomersby.connhome.Views;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.example.petersomersby.connhome.Activitys.AddDeviceActivity;
 import com.example.petersomersby.connhome.Activitys.AddScenarioActivity;
 import com.example.petersomersby.connhome.Models.DatabaseAccess;
 import com.example.petersomersby.connhome.Models.ScenarioModel;

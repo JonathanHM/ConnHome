@@ -34,6 +34,7 @@ public class AddScenarioActivity extends AppCompatActivity implements SelectDevi
         setContentView(R.layout.activity_add_scenario);
 
         mContext = getApplicationContext();
+
         scenarioName = (EditText) findViewById(R.id.input_scenarioName);
         scenarioDescription = (EditText) findViewById(R.id.input_scenarioDescription);
         devices = (EditText) findViewById(R.id.input_scenarioDevices);

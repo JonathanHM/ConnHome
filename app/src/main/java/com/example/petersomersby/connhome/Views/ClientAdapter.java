@@ -1,7 +1,10 @@
 package com.example.petersomersby.connhome.Views;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +15,7 @@ import android.widget.TextView;
 
 import com.example.petersomersby.connhome.Activitys.EditClientActivity;
 import com.example.petersomersby.connhome.Models.ClientModel;
-import com.example.petersomersby.connhome.Models.DeviceModel;
-import com.example.petersomersby.connhome.Models.ScenarioModel;
+import com.example.petersomersby.connhome.Models.DatabaseAccess;
 import com.example.petersomersby.connhome.R;
 
 import java.util.List;
@@ -63,7 +65,7 @@ public class ClientAdapter extends BaseAdapter {
         Button editButton = (Button) rowView.findViewById(R.id.client_list_editButton);
 
         // Get thumbnail element
-        ImageView thumbnailImageView = (ImageView) rowView.findViewById(R.id.client_list_thumbnail);
+        ImageView deleteBtn = (ImageView) rowView.findViewById(R.id.client_list_deleteBtn);
 
         final ClientModel client = (ClientModel) getItem(position);
 
@@ -76,6 +78,37 @@ public class ClientAdapter extends BaseAdapter {
                 Intent editDeviceIntent = new Intent(mContext, EditClientActivity.class);
                 editDeviceIntent.putExtra("clientId", client.getId());
                 mContext.startActivity(editDeviceIntent);
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final View snackBarView = view;
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+                builder.setTitle("Are you sure you wanna delete Client?");
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(mContext);
+                        databaseAccess.open();
+                        databaseAccess.deleteClient(client.getId());
+                        databaseAccess.close();
+                        Snackbar.make(snackBarView, "Client " + client.getTitle() + " Deleted", Snackbar.LENGTH_LONG).show();
+                        mDataSource.remove(client);
+                        notifyDataSetChanged();
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+
+                dialog.show();
             }
         });
 
