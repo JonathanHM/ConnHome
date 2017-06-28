@@ -65,7 +65,8 @@ public class Networking {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return rec_str.substring(0, 1);
+        String toReturn = rec_str.substring(0, 1);
+        return toReturn.equals("") ? "F" : "S";
     }
 }
 

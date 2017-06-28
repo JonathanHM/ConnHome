@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.petersomersby.connhome.Helpers.TaskCanceler;
 import com.example.petersomersby.connhome.Models.ClientModel;
 import com.example.petersomersby.connhome.Models.DatabaseAccess;
 import com.example.petersomersby.connhome.Models.DeviceModel;
@@ -35,6 +37,8 @@ public class DeviceAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<DeviceModel> mDataSource;
     private View mView;
+    private TaskCanceler canceler;
+    private Handler handler = new Handler();
 
     public DeviceAdapter(Context context, List<DeviceModel> devices) {
         mContext = context;
@@ -101,6 +105,8 @@ public class DeviceAdapter extends BaseAdapter {
                 sendOverNetwork.execute(clientModel.getIp_address(), toSend);
                 mView = view;
                 ReceiveOverNetwork receiveOverNetwork = new ReceiveOverNetwork();
+                canceler = new TaskCanceler(receiveOverNetwork);
+                boolean test = handler.postDelayed(canceler, 10*1000);
                 receiveOverNetwork.execute();
             }
         });
@@ -154,6 +160,9 @@ public class DeviceAdapter extends BaseAdapter {
 
         protected void onPostExecute(String statusString) {
             Snackbar.make(mView, statusString.equals("S") ? "Success" : "Failure", Snackbar.LENGTH_LONG).show();
+            if(canceler != null && handler != null) {
+                handler.removeCallbacks(canceler);
+            }
         }
     }
 
